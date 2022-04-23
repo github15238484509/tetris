@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "@types/jquery": "^3.5.14",
     "clean-webpack-plugin": "^4.0.0",
     "html-webpack-plugin": "^5.5.0",
     "ts-loader": "^9.2.8",
@@ -17,6 +18,7 @@
   "main": "index.js",
   "dependencies": {
     "eslint-scope": "^5.1.1",
+    "jquery": "^3.6.0",
     "mime-types": "^2.1.35"
   },
   "repository": {
