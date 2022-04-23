@@ -1,15 +1,15 @@
-import { IPoint, IViewer } from "./types";
+import { Point, IViewer } from "./types";
 
 export class Square {
 
-    private _point: IPoint = {
+    private _point: Point = {
         x: 0,
         y: 0
     }
-    get point(): IPoint {
+    get point(): Point {
         return this._point
     }
-    set point(value: IPoint) {
+    set point(value: Point) {
         this._point = value
         if (this._viewer) {
             this._viewer.show()
@@ -26,7 +26,13 @@ export class Square {
 
     private _viewer?: IViewer
 
-    set viewer(value: IViewer) {
+    get viewer() {
+        return this._viewer
+    }
+    set viewer(value) {
         this._viewer = value
+        if (value?.show) {
+            value.show()
+        }
     }
 }
