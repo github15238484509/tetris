@@ -4,14 +4,7 @@ import { SquareGroup } from "./SquareGroup";
 import { Point, TShape, EDirection } from "./types";
 
 
-function canMove(Points: Point[]): boolean {
-    return !Points.some(it => {
-        return (it.x < 0 ||
-            it.x > SquareConfig.chessSize.width - 1 ||
-            it.y < 0 ||
-            it.y > SquareConfig.chessSize.height - 1)
-    })
-}
+
 function isPoint(item: any): item is Point {
     if (typeof item.x === "undefined") {
         return false
@@ -20,18 +13,27 @@ function isPoint(item: any): item is Point {
 }
 
 export class TetrisTule {
-    static move(tetis: SquareGroup, PointOrEDirection: Point | EDirection):boolean {
+    private static canMove(shape: TShape, centerPoint: Point): boolean {
+        let Newlocation: Point[] = shape.map((it, i) => {
+            return {
+                x: it.x + centerPoint.x,
+                y: it.y + centerPoint.y
+            }
+        })
+        return !Newlocation.some(it => {
+            return (it.x < 0 ||
+                it.x > SquareConfig.chessSize.width - 1 ||
+                it.y < 0 ||
+                it.y > SquareConfig.chessSize.height - 1)
+        })
+    }
+    static move(tetis: SquareGroup, PointOrEDirection: Point | EDirection): boolean {
         if (isPoint(PointOrEDirection)) {
-            let Newlocation: Point[] = tetis.shape.map((it, i) => {
-                return {
-                    x: it.x + PointOrEDirection.x,
-                    y: it.y + PointOrEDirection.y
-                }
-            })
-            if (canMove(Newlocation)) {
+
+            if (this.canMove(tetis.shape, PointOrEDirection)) {
                 tetis.centerPoint = PointOrEDirection
                 return true
-            }else{
+            } else {
                 return false
             }
         } else {
@@ -52,12 +54,18 @@ export class TetrisTule {
                     y: tetis.centerPoint.y + 1,
                 }
             }
-           return this.move(tetis, newPoint)
+            return this.move(tetis, newPoint)
         }
     }
-    static lineMove(tetis: SquareGroup,driection:EDirection){
-        while(this.move(tetis,driection)){
+    static lineMove(tetis: SquareGroup, driection: EDirection) {
+        while (this.move(tetis, driection)) {
 
+        }
+    }
+    static rotate(tetis: SquareGroup) {
+        let newShapePosition = tetis.afterRouter()
+        if (this.canMove(newShapePosition, tetis.centerPoint)) {
+            tetis.rotate()
         }
     }
 }

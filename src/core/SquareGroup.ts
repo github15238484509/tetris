@@ -12,14 +12,10 @@ export class SquareGroup {
     }
     set centerPoint(value: Point) {
         this._centerPoint = value
-        this._shape.forEach((it, i) => {
-            this._squares[i].point = {
-                x: it.x + this._centerPoint.x,
-                y: it.y + this._centerPoint.y,
-            }
-        })
+        this._setPosition()
+
     }
-    get shape(){
+    get shape() {
         return this._shape
     }
     constructor(private _shape: TShape, private _centerPoint: Point, private _color: string) {
@@ -34,5 +30,42 @@ export class SquareGroup {
             arr.push(sq)
         })
         this._squares = arr
+    }
+
+    /**
+     * 是否是顺时针旋转
+     */
+    protected isClock: boolean = true
+    afterRouter(): TShape {
+        let shapes: TShape = []
+        if (this.isClock) {
+            shapes = this._shape.map((it) => {
+                return {
+                    x: -it.y,
+                    y: it.x
+                }
+            })
+        } else {
+            shapes = this._shape.map(it => {
+                return {
+                    x: it.y,
+                    y: -it.x
+                }
+            })
+        }
+        return shapes
+    }
+    rotate() {
+        let shapes = this.afterRouter()
+        this._shape = shapes
+        this._setPosition()
+    }
+    private _setPosition() {
+        this._shape.forEach((it, i) => {
+            this._squares[i].point = {
+                x: it.x + this._centerPoint.x,
+                y: it.y + this._centerPoint.y,
+            }
+        })
     }
 }

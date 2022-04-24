@@ -31,10 +31,14 @@ $("#down").click(() => {
     // }
 })
 $("#up").click(() => {
-    tetris.centerPoint = {
+    // tetris.centerPoint = {
+    //     x: tetris.centerPoint.x,
+    //     y: tetris.centerPoint.y - 1
+    // }
+    TetrisTule.move(tetris, {
         x: tetris.centerPoint.x,
         y: tetris.centerPoint.y - 1
-    }
+    })
 })
 $("#left").click(() => {
     TetrisTule.move(tetris, EDirection.left)
@@ -49,6 +53,10 @@ $("#right").click(() => {
     //     x: tetris.centerPoint.x + 1,
     //     y: tetris.centerPoint.y
     // }
+})
+$("#rotate").click(() => {
+    // tetris.rotate()
+    TetrisTule.rotate(tetris)
 })
 export default {}
 
