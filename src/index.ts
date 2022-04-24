@@ -1,30 +1,53 @@
 import { Square } from "./core/Square"
-import { IViewer } from "./core/types"
+import { IViewer, TShape } from "./core/types"
 import { SquarePagesView } from "./core/views/SquarePagesView"
 import $ from "jquery"
+import { SquareGroup } from "./core/SquareGroup"
 
-var square = new Square()
-square.viewer = new SquarePagesView(square, $("#app"))
-console.log(new SquarePagesView(square, $("#app")));
 
-console.log(square.viewer);
-
-square.color = "red"
-square.point = {
-    x: 1,
-    y: 2
+let shapArr: TShape = [{
+    x: 0,
+    y: -1
+}, {
+    x: -1,
+    y: 0
+}, {
+    x: 0,
+    y: 0
+}, {
+    x: 0,
+    y: 1
+}]
+let centerPoints = {
+    x: 6,
+    y: 5
 }
-$("#move").click(() => {
-    square.point = {
-        x: 1,
-        y: square.point.y + 1
+let groups = new SquareGroup(shapArr, centerPoints, "red")
+groups.squares.forEach(it => it.viewer = new SquarePagesView(it, $("#app")))
+
+
+$("#down").click(() => {
+    groups.centerPoint = {
+        x: groups.centerPoint.x,
+        y: groups.centerPoint.y + 1
     }
 })
-$("#remove").click(() => {
-    square.viewer?.remove()
+$("#up").click(() => {
+    groups.centerPoint = {
+        x: groups.centerPoint.x,
+        y: groups.centerPoint.y - 1
+    }
 })
-$("#show").click(() => {
-    square.viewer = new SquarePagesView(square, $("#app"))
+$("#left").click(() => {
+    groups.centerPoint = {
+        x: groups.centerPoint.x - 1,
+        y: groups.centerPoint.y
+    }
 })
-
+$("#right").click(() => {
+    groups.centerPoint = {
+        x: groups.centerPoint.x + 1,
+        y: groups.centerPoint.y
+    }
+})
 export default {}
