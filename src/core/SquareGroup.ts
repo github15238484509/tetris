@@ -19,7 +19,9 @@ export class SquareGroup {
             }
         })
     }
-
+    get shape(){
+        return this._shape
+    }
     constructor(private _shape: TShape, private _centerPoint: Point, private _color: string) {
         let arr: Square[] = []
         this._shape.forEach((it) => {

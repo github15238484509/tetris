@@ -8,3 +8,9 @@ export interface IViewer {
 }
 
 export type TShape = Point[]
+
+export enum  EDirection{
+    left,
+    down,
+    right
+}
