@@ -1,5 +1,5 @@
 import { Square } from "./Square";
-import SquareConfig from "./SquareConfig";
+import SquareConfig from "./GameConfig";
 import { SquareGroup } from "./SquareGroup";
 import { Point, TShape, EDirection } from "./types";
 

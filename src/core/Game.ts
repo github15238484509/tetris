@@ -2,7 +2,7 @@ import { SquareGroup } from "./SquareGroup";
 import { CreateGroupSquare } from "./Tetris";
 import { EDirection, GameState, GameViewer, Point } from "./types";
 import { SquarePagesView } from "./views/SquarePagesView";
-import GameConfig from "./SquareConfig"
+import GameConfig from "./GameConfig"
 import $ from "jquery"
 import { TetrisTule } from "./TetrisRule";
 import { GamePageView } from "./views/GamePageView";
@@ -18,12 +18,13 @@ export class Game {
     constructor(private _views: GamePageView) {
         this._setRightPosition(this._nextSquare, GameConfig.nextSize)
         this._views.showNext(this._nextSquare)
+        this._views.init(this)
+        this.score = 0
     }
     private _storeSquare: Square[] = []
     private _score: number = 0
     start() {
         if (this._state === GameState.playing) {
-            this._state = GameState.pause
             this.pause()
             return
         }
@@ -35,7 +36,10 @@ export class Game {
             // 将控制权给玩家
             this.switchTetris()
         }
-
+        this._views.onStart()
+        this.autoDrop()
+    }
+    private autoDrop() {
         clearInterval(this._time)
         this._time = setInterval(() => {
             this.downMove()
@@ -49,6 +53,7 @@ export class Game {
                 clearInterval(this._time)
                 this._time = null
             }
+            this._views.onPause()
         }
     }
 
@@ -62,15 +67,27 @@ export class Game {
         this.switchTetris()
     }
     private _addScore(num: number) {
-        this._score += num*12 
-        console.log(this._score);
+        this.score += num * 12
+    }
+    set score(value) {
+        if (this._score !== value) {
+            this.delay *= 0.8
+            this.autoDrop()
+        }
+        this._score = value
+        this._views.onScoreChange(this.score)
+
+
+    }
+    get score() {
+        return this._score
     }
     private _overStart() {
         this._storeSquare.forEach(it => {
             it.viewer?.remove()
         })
         this._storeSquare = []
-        this._score = 0
+        this.score = 0
         this._currentSquare = undefined
     }
     private _gameOver() {
@@ -80,6 +97,7 @@ export class Game {
         this._state = GameState.over
         clearInterval(this._time)
         this._time = null
+        this._views.onOver()
     }
     private switchTetris() {
         this._currentSquare = this._nextSquare
