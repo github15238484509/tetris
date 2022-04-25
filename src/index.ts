@@ -17,10 +17,32 @@ $("#pause").click(() => {
     g.pause()
 })
 
+
 $("#down").click(() => {
     g.downlineMove()
 
 })
+let a  =  0
+document.onkeydown = function (e) {
+    if (e.keyCode === 38) {
+        g.rotate()
+    } else if (e.keyCode === 37) {
+        g.leftMove()
+    } else if (e.keyCode === 39) {
+        g.rightMove()
+    } else if (e.keyCode === 40){
+        g.downlineMove()
+    }else if (e.keyCode === 32){
+        if(a%2){
+            a++
+            g.pause()
+        }else{
+            a++
+            g.start()
+        }
+    }
+}
+
 $("#left").click(() => {
     g.leftMove()
 })

@@ -82,4 +82,51 @@ export class TetrisTule {
             tetis.rotate()
         }
     }
+    static deleteSquares(tetis: Square[]): number {
+        // 获取方块下面的那几行
+        let result = tetis.map(it => it.point.y)
+        let minY = Math.min(...result)
+        let maxY = Math.max(...result)
+        
+        let num = 0;
+        for (let y = minY; y <= maxY; y++) {
+            if (this.deleteLine(tetis, y)) {
+                num++;
+            }
+        }
+        return num;
+    }
+    private static getLineSquare(tetis: Square[], index: number): Square[] {
+        let result = tetis.filter(it => it.point.y === index)
+        return result
+    } /**
+    * 消除一行
+    * @param exists 
+    * @param y 
+    */
+   private static deleteLine(exists: Square[], y: number): boolean {
+       const squares = exists.filter(sq => sq.point.y === y);
+       if (squares.length === SquareConfig.panelSize.width) {
+           //这一行可以消除
+           squares.forEach(sq => {
+               //1. 从界面中移除
+               if (sq.viewer) {
+                   sq.viewer.remove();
+               }
+               //2. 从数组中移除
+               const index = exists.indexOf(sq)
+               exists.splice(index, 1);
+           })
+           //2. 剩下的，y坐标比当前的y小的方块，y+1
+           exists.filter(sq => sq.point.y < y).forEach(sq => {
+               sq.point = {
+                   x: sq.point.x,
+                   y: sq.point.y + 1
+               }
+           })
+
+           return true;
+       }
+       return false;
+   }
 }

@@ -19,7 +19,7 @@ export class Game {
         this._setRightPosition(this._nextSquare, GameConfig.nextSize)
         this._views.showNext(this._nextSquare)
     }
-    private storeSquare: Square[] = []
+    private _storeSquare: Square[] = []
     start() {
         if (this._state === GameState.playing) {
             return
@@ -48,8 +48,10 @@ export class Game {
 
     private hitBottom() {
         if (this._currentSquare) {
-            this.storeSquare = this.storeSquare.concat(this._currentSquare?.squares)
+            this._storeSquare = this._storeSquare.concat(this._currentSquare?.squares)
         }
+        // 看看是能够消除
+        TetrisTule.deleteSquares(this._storeSquare)
         this.switchTetris()
     }
 
@@ -81,42 +83,41 @@ export class Game {
             y: 0
         }
         SquareGroup.centerPoint = postion
-        while (!TetrisTule.canMove(SquareGroup.shape, postion, this.storeSquare)) {
-            postion = {
-                x: postion.x,
-                y: postion.y + 1
-            }
-            SquareGroup.centerPoint = postion
+        while (SquareGroup.squares.some(it => it.point.y < 0)) {
+            SquareGroup.centerPoint = {
+                x: SquareGroup.centerPoint.x,
+                y: SquareGroup.centerPoint.y + 1
+            };
         }
     }
 
     leftMove() {
         if (this._currentSquare && this._state === GameState.playing) {
-            TetrisTule.move(this._currentSquare, EDirection.left, this.storeSquare)
+            TetrisTule.move(this._currentSquare, EDirection.left, this._storeSquare)
         }
     }
     rightMove() {
         if (this._currentSquare && this._state === GameState.playing) {
-            TetrisTule.move(this._currentSquare, EDirection.right, this.storeSquare)
+            TetrisTule.move(this._currentSquare, EDirection.right, this._storeSquare)
         }
     }
     downlineMove() {
         if (this._currentSquare && this._state === GameState.playing) {
-            if (!TetrisTule.lineMove(this._currentSquare, EDirection.down, this.storeSquare)) {
+            if (!TetrisTule.lineMove(this._currentSquare, EDirection.down, this._storeSquare)) {
                 this.hitBottom()
             }
         }
     }
     downMove() {
         if (this._currentSquare && this._state === GameState.playing) {
-            if (!TetrisTule.move(this._currentSquare, EDirection.down, this.storeSquare)) {
+            if (!TetrisTule.move(this._currentSquare, EDirection.down, this._storeSquare)) {
                 this.hitBottom()
             }
         }
     }
     rotate() {
         if (this._currentSquare && this._state === GameState.playing) {
-            TetrisTule.rotate(this._currentSquare, this.storeSquare)
+            TetrisTule.rotate(this._currentSquare, this._storeSquare)
         }
     }
 } 
