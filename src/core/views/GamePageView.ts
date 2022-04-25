@@ -20,6 +20,19 @@ export class GamePageView implements GameViewer {
             width: GameConfig.nextSize.width * PageConfig.square.width,
             height: GameConfig.nextSize.height * PageConfig.square.height
         })
+        document.onkeydown = function (e) {
+            if (e.keyCode === 38) {
+                game.rotate()
+            } else if (e.keyCode === 37) {
+                game.leftMove()
+            } else if (e.keyCode === 39) {
+                game.rightMove()
+            } else if (e.keyCode === 40) {
+                game.downlineMove()
+            } else if (e.keyCode === 32) {
+                game.start()
+            }
+        }
     }
     onPause(): void {
         this.mes.css({
