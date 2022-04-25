@@ -1,0 +1,57 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>俄罗斯方块</title><style>body,
+        html {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #app {
+            position: relative;
+            margin: 1rem auto;
+            display: flex;
+            justify-content: center;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #panel {
+            position: relative;
+            background-color: #000;
+        }
+
+        #next {
+            position: relative;
+            align-self: flex-start;
+        }
+
+        #nextPanel {
+            position: relative;
+        }
+
+        #score {
+            font-size: 3rem;
+            text-align: center;
+        }
+
+        #LED p {
+            text-align: center;
+        }
+
+        .mes {
+            position: absolute;
+            z-index: 999;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            display: none;
+        }
+
+        .mes p {
+            padding: 1rem;
+            border: 2px solid red;
+            background-color: white;
+        }</style><script defer="defer" src="script/bundle.js"></script></head><body><div id="app"><div id="panel"><div class="mes"><p>游戏暂停</p></div></div><div id="next"><div id="nextPanel"></div><div id="score">1223</div><div id="LED"><p>↑：改变形状</p><p>↓：直接落下</p><p>←：左侧移动</p><p>→：左侧移动</p><p>空格：暂停/开始/结束</p></div></div></div><button id="start">start</button> <button id="pause">pause</button> <button id="down">down</button> <button id="up">up</button> <button id="left">left</button> <button id="right">right</button> <button id="rotate">rotate</button></body></html>
