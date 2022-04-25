@@ -20,17 +20,23 @@ export class Game {
         this._views.showNext(this._nextSquare)
     }
     private _storeSquare: Square[] = []
+    private _score: number = 0
     start() {
         if (this._state === GameState.playing) {
+            this._state = GameState.pause
+            this.pause()
             return
         }
+        if (this._state === GameState.over) {
+            this._overStart()
+        }
         this._state = GameState.playing
-
         if (!this._currentSquare) {
             // 将控制权给玩家
             this.switchTetris()
         }
 
+        clearInterval(this._time)
         this._time = setInterval(() => {
             this.downMove()
         }, this.delay)
@@ -51,14 +57,39 @@ export class Game {
             this._storeSquare = this._storeSquare.concat(this._currentSquare?.squares)
         }
         // 看看是能够消除
-        TetrisTule.deleteSquares(this._storeSquare)
+        let num = TetrisTule.deleteSquares(this._storeSquare)
+        this._addScore(num)
         this.switchTetris()
     }
-
+    private _addScore(num: number) {
+        this._score += num*12 
+        console.log(this._score);
+    }
+    private _overStart() {
+        this._storeSquare.forEach(it => {
+            it.viewer?.remove()
+        })
+        this._storeSquare = []
+        this._score = 0
+        this._currentSquare = undefined
+    }
+    private _gameOver() {
+        this._nextSquare.squares.forEach((it) => {
+            it.viewer?.remove()
+        })
+        this._state = GameState.over
+        clearInterval(this._time)
+        this._time = null
+    }
     private switchTetris() {
         this._currentSquare = this._nextSquare
         this._setRightPosition(this._currentSquare, GameConfig.panelSize)
 
+        //判断时候可以结束
+        if (!TetrisTule.canMove(this._currentSquare.shape, this._currentSquare.centerPoint, this._storeSquare)) {
+            this._gameOver()
+            return
+        }
         //清空另一个区域的内容
         this._nextSquare.squares.forEach((it) => {
             it.viewer?.remove()

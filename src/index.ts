@@ -33,13 +33,13 @@ document.onkeydown = function (e) {
     } else if (e.keyCode === 40){
         g.downlineMove()
     }else if (e.keyCode === 32){
-        if(a%2){
-            a++
-            g.pause()
-        }else{
-            a++
+        // if(a%2){
+        //     a++
+        //     g.pause()
+        // }else{
+        //     a++
             g.start()
-        }
+        // }
     }
 }
 
