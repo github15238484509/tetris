@@ -1,6 +1,11 @@
 export default {
-    chessSize: {
+    panelSize: {
         width: 10,
         height: 10
-    }
+    },
+    nextSize: {
+        width: 5,
+        height: 5
+    },
+    delay:1000
 }

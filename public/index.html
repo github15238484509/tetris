@@ -8,24 +8,44 @@
     <title>俄罗斯方块</title>
     <style>
         #app {
+            width: 500px;
+            height: 500px;
+            position: relative;
+            margin: 1rem auto;
+            display: flex;
+        }
+
+        #panel {
             width: 300px;
             height: 300px;
             position: relative;
-            margin: 1rem auto;
             background-color: #000;
+        }
+
+        #next {
+            width: 150px;
+            height: 150px;
+            position: relative;
+            border: 1px solid green;
+            margin-left: 2rem;
         }
     </style>
 </head>
 
 <body>
-    <div id="app"></div>
+    <div id="app">
+        <div id="panel"></div>
+        <div id="next"></div>
+    </div>
 
-
+    <button id="start">start</button>
+    <button id="pause">pause</button>
     <button id="down">down</button>
     <button id="up">up</button>
     <button id="left">left</button>
     <button id="right">right</button>
     <button id="rotate">rotate</button>
+
 </body>
 
 </html>

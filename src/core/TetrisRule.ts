@@ -13,7 +13,7 @@ function isPoint(item: any): item is Point {
 }
 
 export class TetrisTule {
-    private static canMove(shape: TShape, centerPoint: Point): boolean {
+     static canMove(shape: TShape, centerPoint: Point): boolean {
         let Newlocation: Point[] = shape.map((it, i) => {
             return {
                 x: it.x + centerPoint.x,
@@ -22,9 +22,9 @@ export class TetrisTule {
         })
         return !Newlocation.some(it => {
             return (it.x < 0 ||
-                it.x > SquareConfig.chessSize.width - 1 ||
+                it.x > SquareConfig.panelSize.width - 1 ||
                 it.y < 0 ||
-                it.y > SquareConfig.chessSize.height - 1)
+                it.y > SquareConfig.panelSize.height - 1)
         })
     }
     static move(tetis: SquareGroup, PointOrEDirection: Point | EDirection): boolean {
